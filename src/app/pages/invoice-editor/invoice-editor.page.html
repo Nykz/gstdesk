@@ -1,0 +1,238 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/invoices" text="Invoices" />
+    </ion-buttons>
+    <ion-title>{{ isNew() ? 'New invoice' : invoice().number }}</ion-title>
+    <ion-buttons slot="end">
+      <app-status-badge class="ion-hide-md-down" [status]="status()" />
+      <ion-button fill="outline" aria-label="Print or save as PDF" (click)="print()">
+        <ion-icon slot="start" name="print-outline" />
+        <ion-text class="ion-hide-md-down">Print / PDF</ion-text>
+      </ion-button>
+      @if (invoice().status === InvoiceStatus.Draft) {
+        <ion-button fill="outline" aria-label="Save draft" (click)="saveDraft()">
+          <ion-icon slot="start" name="document-outline" />
+          <ion-text class="ion-hide-md-down">Save draft</ion-text>
+        </ion-button>
+      }
+      <ion-button fill="solid" aria-label="Save invoice" (click)="saveInvoice()">
+        <ion-icon slot="start" name="save-outline" />
+        <ion-text class="ion-hide-sm-down">Save invoice</ion-text>
+      </ion-button>
+      @if (!isNew() && invoice().status !== InvoiceStatus.Paid) {
+        <ion-button fill="solid" color="success" aria-label="Mark paid" (click)="markPaid()">
+          <ion-icon slot="icon-only" name="checkmark-done-outline" />
+        </ion-button>
+      }
+      @if (!isNew()) {
+        <ion-button fill="clear" color="danger" aria-label="Delete invoice" (click)="remove()">
+          <ion-icon slot="icon-only" name="trash-outline" />
+        </ion-button>
+      }
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="app-page" [attr.data-view]="view()">
+    <ion-row>
+      <ion-col size="12" size-md="6" size-lg="4">
+        <ion-segment class="app-tabs" [value]="view()" (ionChange)="setView($event)">
+          <ion-segment-button value="edit"><ion-label>Edit</ion-label></ion-segment-button>
+          <ion-segment-button value="preview"><ion-label>Preview</ion-label></ion-segment-button>
+        </ion-segment>
+      </ion-col>
+    </ion-row>
+
+    @if (issues().length > 0) {
+      <ion-row>
+        <ion-col size="12">
+          <ion-card class="app-card problems" role="alert">
+            <ion-card-header>
+              <ion-card-title>Fix these before issuing</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-list lines="none">
+                @for (issue of issues(); track issue.field + issue.message) {
+                  <ion-item>
+                    <ion-icon slot="start" name="alert-circle-outline" color="danger" aria-hidden="true" />
+                    <ion-label>{{ issue.message }}</ion-label>
+                  </ion-item>
+                }
+              </ion-list>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    }
+
+    <ion-row [class.ion-hide]="view() !== 'edit'">
+      <ion-col size="12">
+        <ion-card class="app-card">
+          <ion-card-header>
+            <ion-card-title>Invoice details</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-grid class="ion-no-padding">
+              <ion-row>
+                <ion-col size="12" size-md="6">
+                  <ion-select
+                    label="Customer"
+                    labelPlacement="stacked"
+                    fill="outline"
+                    interface="popover"
+                    placeholder="Choose a customer"
+                    [value]="invoice().customerId"
+                    (ionChange)="setCustomer($event)"
+                  >
+                    @for (customer of customers(); track customer.id) {
+                      <ion-select-option [value]="customer.id">{{ customer.name }}</ion-select-option>
+                    }
+                  </ion-select>
+                  <ion-button fill="clear" size="small" (click)="addCustomer()">
+                    <ion-icon slot="start" name="person-add-outline" />
+                    New customer
+                  </ion-button>
+                </ion-col>
+                <ion-col size="12" size-md="6">
+                  <ion-input label="Invoice number" labelPlacement="stacked" fill="outline" [readonly]="true" [value]="invoice().number" />
+                </ion-col>
+                <ion-col size="12" size-md="6">
+                  <ion-input label="Invoice date" labelPlacement="stacked" fill="outline" type="date" [value]="invoice().issueDate" (ionInput)="setIssueDate($event)" />
+                </ion-col>
+                <ion-col size="12" size-md="6">
+                  <ion-input label="Due date" labelPlacement="stacked" fill="outline" type="date" [value]="invoice().dueDate" (ionInput)="setDueDate($event)" />
+                </ion-col>
+                <ion-col size="12" role="group" aria-label="Payment terms">
+                  <ion-text class="app-eyebrow">Payment terms</ion-text>
+                  @for (days of terms; track days) {
+                    <ion-chip [attr.data-active]="activeTerm() === days" (click)="setTerms(days)">Net {{ days }}</ion-chip>
+                  }
+                </ion-col>
+                <ion-col size="12" size-md="6">
+                  <ion-select
+                    label="Currency"
+                    labelPlacement="stacked"
+                    fill="outline"
+                    interface="popover"
+                    [value]="invoice().currency"
+                    (ionChange)="setCurrency($event)"
+                  >
+                    @for (currency of currencies; track currency) {
+                      <ion-select-option [value]="currency">{{ currency }}</ion-select-option>
+                    }
+                  </ion-select>
+                </ion-col>
+                @if (foreign()) {
+                  <ion-col size="12" size-md="6">
+                    <ion-input
+                      [label]="'Exchange rate: ' + business().currency + ' per 1 ' + invoice().currency"
+                      labelPlacement="stacked"
+                      fill="outline"
+                      type="number"
+                      inputmode="decimal"
+                      min="0"
+                      placeholder="e.g. 83.50"
+                      [value]="invoice().exchangeRate || ''"
+                      helperText="Type your own rate, or fetch today's."
+                      (ionInput)="setExchangeRate($event)"
+                    />
+                    <ion-button fill="clear" size="small" [disabled]="fetchingRate()" (click)="fetchRate()">
+                      <ion-icon slot="start" name="cloud-download-outline" />
+                      Get today's rate
+                    </ion-button>
+                  </ion-col>
+                }
+                <ion-col size="12">
+                  <ion-toggle justify="start" labelPlacement="end" [checked]="exempt()" (ionChange)="setExempt($event)">
+                    {{ regime().exemptLabel }}
+                  </ion-toggle>
+                </ion-col>
+                <ion-col size="12">
+                  <ion-item lines="none" class="app-callout">
+                    <ion-icon slot="start" name="information-circle-outline" aria-hidden="true" />
+                    <ion-label class="ion-text-wrap">
+                      @if (exempt()) {
+                        {{ regime().exemptNote }}
+                        @if (autoExempt()) {
+                          Switched on automatically because {{ customer()?.name }} is in {{ customerCountry() }}. Turn it off to charge {{ regime().taxName }} anyway.
+                        }
+                        @if (autoCurrency()) {
+                          Billed in {{ invoice().currency }}: enter today's exchange rate to {{ business().currency }} below.
+                        }
+                      } @else if (customer()) {
+                        {{ regime().taxName }} is added to each line at the rate you pick.
+                      } @else {
+                        Pick a customer and the tax is worked out for you.
+                      }
+                    </ion-label>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="12">
+        <app-invoice-items
+          [items]="invoice().items"
+          (itemsChange)="setItems($event)"
+          [regime]="regime()"
+          [locale]="locale()"
+          [currency]="invoice().currency"
+          [exempt]="exempt()"
+        >
+          <ion-list lines="none" class="totals">
+            <ion-item>
+              <ion-label class="app-muted">Subtotal</ion-label>
+              <ion-text slot="end" class="app-number">{{ money(totals().subtotal) }}</ion-text>
+            </ion-item>
+            @for (line of totalLines(); track line.label) {
+              <ion-item>
+                <ion-label class="app-muted">{{ line.label }}</ion-label>
+                <ion-text slot="end" class="app-number">{{ line.amount }}</ion-text>
+              </ion-item>
+            }
+            @if (totals().roundOff !== 0) {
+              <ion-item>
+                <ion-label class="app-muted">Round off</ion-label>
+                <ion-text slot="end" class="app-number">{{ money(totals().roundOff) }}</ion-text>
+              </ion-item>
+            }
+            <ion-item class="grand">
+              <ion-label><h1>Total</h1></ion-label>
+              <h1 slot="end" class="app-number">{{ money(totals().grandTotal) }}</h1>
+            </ion-item>
+          </ion-list>
+        </app-invoice-items>
+      </ion-col>
+
+      <ion-col size="12">
+        <ion-card class="app-card">
+          <ion-card-header>
+            <ion-card-title>Notes</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-textarea
+              label="Notes shown on the invoice"
+              labelPlacement="stacked"
+              fill="outline"
+              [autoGrow]="true"
+              [value]="invoice().notes"
+              (ionInput)="setNotes($event)"
+            />
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <ion-row [class.ion-hide]="view() !== 'preview'">
+      <ion-col size="12" #previewPane aria-label="Invoice preview">
+        <ion-text class="app-eyebrow">Live preview · updates as you type</ion-text>
+        <app-invoice-paper [style.zoom]="previewScale()" [invoice]="invoice()" [business]="business()" [customer]="customer()" />
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

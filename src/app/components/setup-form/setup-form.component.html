@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Welcome to GSTDesk</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <p class="app-muted">
+    Tell us where your business is. Your country sets the tax rules and labels, and your currency is used for
+    dashboard totals and exchange rates. You can change both later in Settings.
+  </p>
+
+  <ion-input
+    label="Business name"
+    labelPlacement="stacked"
+    fill="outline"
+    placeholder="Your business or company name"
+    [value]="name()"
+    [class.ion-invalid]="nameError()"
+    [class.ion-touched]="submitted()"
+    errorText="Enter your business name."
+    (ionInput)="setName($event)"
+  />
+
+  <ion-select
+    label="Country / tax rules"
+    labelPlacement="stacked"
+    fill="outline"
+    interface="popover"
+    [value]="country()"
+    (ionChange)="setCountry($event)"
+  >
+    @for (item of regimes; track item.code) {
+      <ion-select-option [value]="item.code">{{ item.name }}</ion-select-option>
+    }
+  </ion-select>
+
+  <ion-select
+    label="Your currency"
+    labelPlacement="stacked"
+    fill="outline"
+    interface="popover"
+    helperText="Exchange rates on foreign invoices are entered against this currency."
+    [value]="currency()"
+    (ionChange)="setCurrency($event)"
+  >
+    @for (item of currencies(); track item) {
+      <ion-select-option [value]="item">{{ item }}</ion-select-option>
+    }
+  </ion-select>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button expand="block" (click)="start()">Get started</ion-button>
+    <ion-button expand="block" fill="clear" (click)="useSampleData()">Explore with sample data</ion-button>
+  </ion-toolbar>
+</ion-footer>

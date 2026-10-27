@@ -1,0 +1,95 @@
+ion-grid.app-page {
+  // The KPI cards stretch to the same height as the hero card beside them.
+  ion-row.kpis {
+    // Cancel the column padding of the row nested inside a column so the cards line up with the hero card.
+    margin: calc(var(--ion-grid-column-padding) * -1);
+    height: calc(100% + var(--ion-grid-column-padding) * 2);
+
+    ion-col {
+      display: flex;
+    }
+  }
+
+  ion-card.hero {
+    --background: linear-gradient(160deg, var(--app-hero-from), var(--app-hero-to));
+    border-color: transparent;
+    height: 100%;
+    color: var(--app-hero-text);
+
+    ion-card-header {
+      padding: var(--stack-md) var(--stack-lg) 0;
+    }
+
+    ion-card-subtitle {
+      color: var(--app-hero-muted);
+    }
+
+    ion-card-content {
+      padding: 0 var(--stack-lg) var(--stack-md);
+
+      h1 {
+        margin: 0;
+        font-size: var(--app-text-hero);
+        line-height: 1.15;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+      }
+
+      ion-item {
+        --background: transparent;
+        --color: var(--app-hero-muted);
+        --padding-start: 0;
+        --inner-padding-end: 0;
+        --min-height: 30px;
+        font-size: var(--app-text-sm);
+
+        strong {
+          color: var(--app-hero-text);
+        }
+
+        ion-chip {
+          --background: rgba(0, 0, 0, 0.28);
+          --color: var(--app-hero-text);
+          border: 0;
+          margin-inline: 0 var(--stack-sm);
+          font-weight: 700;
+        }
+      }
+
+      ion-progress-bar {
+        --background: rgba(255, 255, 255, 0.22);
+        --progress-background: var(--app-hero-text);
+        height: 8px;
+        margin: var(--stack-xs) 0;
+        border-radius: 999px;
+      }
+    }
+  }
+
+  ion-card ion-card-header ion-item {
+    --padding-start: 0;
+    --inner-padding-end: 0;
+  }
+
+  ion-avatar {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    background: var(--app-surface-low);
+    color: var(--app-on-surface-variant);
+    font-size: var(--app-text-sm);
+    font-weight: 600;
+  }
+
+  ion-progress-bar {
+    --background: var(--app-surface-low);
+    --progress-background: var(--ion-color-primary);
+    border-radius: 999px;
+    margin-top: var(--stack-xs);
+  }
+
+  ion-list ion-item h2 {
+    font-weight: 600;
+  }
+}

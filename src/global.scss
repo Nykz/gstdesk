@@ -1,37 +1,324 @@
-/*
- * App Global CSS
- * ----------------------------------------------------------------------------
- * Put style rules here that you want to apply globally. These styles are for
- * the entire app and not just one component. Additionally, this file can be
- * used as an entry point to import other CSS/Sass files to be included in the
- * output CSS.
- * For more information on global stylesheets, visit the documentation:
- * https://ionicframework.com/docs/layout/global-stylesheets
- */
-
 /* Core CSS required for Ionic components to work properly */
-@import "@ionic/angular/css/core.css";
+@import '@ionic/angular/css/core.css';
 
 /* Basic CSS for apps built with Ionic */
-@import "@ionic/angular/css/normalize.css";
-@import "@ionic/angular/css/structure.css";
-@import "@ionic/angular/css/typography.css";
-@import "@ionic/angular/css/display.css";
+@import '@ionic/angular/css/normalize.css';
+@import '@ionic/angular/css/structure.css';
+@import '@ionic/angular/css/typography.css';
+@import '@ionic/angular/css/display.css';
 
-/* Optional CSS utils that can be commented out */
-@import "@ionic/angular/css/padding.css";
-@import "@ionic/angular/css/float-elements.css";
-@import "@ionic/angular/css/text-alignment.css";
-@import "@ionic/angular/css/text-transformation.css";
-@import "@ionic/angular/css/flex-utils.css";
+/* Optional CSS utils */
+@import '@ionic/angular/css/padding.css';
+@import '@ionic/angular/css/float-elements.css';
+@import '@ionic/angular/css/text-alignment.css';
+@import '@ionic/angular/css/text-transformation.css';
+@import '@ionic/angular/css/flex-utils.css';
 
-/**
- * Ionic Dark Mode
- * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
- */
+/* Dark mode is the `ion-palette-dark` class on <html> (see ThemeService) */
+@import '@ionic/angular/css/palettes/dark.class.css';
 
-/* @import "@ionic/angular/css/palettes/dark.always.css"; */
-/* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import '@ionic/angular/css/palettes/dark.system.css';
+// ---- Shared patterns (used on 2+ pages) ------------------------------------
+
+ion-content {
+  --background: var(--app-background);
+}
+
+// Page header: transparent bar, large bold title, one pill action on the right.
+ion-header {
+  &::after {
+    display: none;
+  }
+
+  ion-toolbar {
+    --background: var(--app-background);
+    --border-width: 0;
+    --min-height: 72px;
+    --padding-start: var(--stack-md);
+    --padding-end: var(--stack-md);
+
+    ion-title {
+      font-size: var(--app-text-xl);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      padding-inline: var(--stack-sm);
+    }
+
+    ion-buttons ion-button.button:not(.button-round) {
+      --border-radius: var(--app-radius);
+      --padding-start: 14px;
+      --padding-end: 14px;
+      font-weight: 600;
+
+      &[fill='solid'] {
+        --background: var(--app-on-surface);
+        --color: var(--app-background);
+        --background-disabled: var(--app-surface-high);
+        --color-disabled: var(--app-on-surface-variant);
+      }
+
+      &[fill='outline'] {
+        --color: var(--app-on-surface);
+        --border-color: var(--app-on-surface-variant);
+        --border-width: 1.5px;
+      }
+    }
+  }
+}
+
+ion-button {
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+ion-card.app-card {
+  --background: var(--app-surface);
+  margin: 0;
+  border-radius: var(--app-radius-lg);
+  box-shadow: none;
+  border: 1px solid var(--app-outline-variant);
+
+  ion-card-header {
+    padding: var(--stack-lg) var(--stack-lg) var(--stack-sm);
+  }
+
+  ion-card-content {
+    padding: var(--stack-sm) var(--stack-lg) var(--stack-lg);
+  }
+
+  ion-card-title {
+    font-size: var(--app-text-lg);
+    font-weight: 700;
+    color: var(--app-on-surface);
+  }
+
+  ion-card-subtitle {
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: var(--app-text-sm);
+    color: var(--app-on-surface-variant);
+  }
+
+  ion-list {
+    background: transparent;
+    padding: 0;
+  }
+
+  ion-item {
+    --background: transparent;
+    --border-color: var(--app-outline-variant);
+    --padding-start: var(--stack-lg);
+    --inner-padding-end: var(--stack-lg);
+  }
+
+  ion-card-header ion-item {
+    --padding-start: 0;
+    --inner-padding-end: 0;
+  }
+
+  ion-card-content ion-col {
+    padding: var(--stack-sm);
+  }
+}
+
+ion-grid.app-page {
+  --ion-grid-padding: var(--margin-page);
+  --ion-grid-column-padding: calc(var(--gutter-card) / 2);
+  max-width: 1600px;
+  margin: 0 auto;
+
+  &.app-narrow {
+    max-width: 960px;
+  }
+}
+
+// Small uppercase caption: KPI labels, table headers
+.app-eyebrow,
+ion-card.app-card ion-card-subtitle.app-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: var(--app-text-xs);
+  font-weight: 600;
+  color: var(--app-on-surface-variant);
+}
+
+.app-muted {
+  color: var(--app-on-surface-variant);
+}
+
+.app-number {
+  font-variant-numeric: tabular-nums;
+}
+
+.app-mono {
+  font-family: var(--app-mono);
+}
+
+.app-empty {
+  text-align: center;
+  padding: var(--stack-lg) var(--stack-md);
+  color: var(--app-on-surface-variant);
+
+  h2 {
+    color: var(--app-on-surface);
+    font-size: var(--app-text-lg);
+    margin: var(--stack-sm) 0;
+  }
+}
+
+// Form fields: dark inset fill with a visible outline, label sits on the border.
+ion-input,
+ion-select,
+ion-textarea {
+  --background: var(--app-surface-low);
+  --border-color: var(--app-outline);
+  --border-radius: 10px;
+  --color: var(--app-on-surface);
+  --placeholder-color: var(--app-on-surface-variant);
+  --placeholder-opacity: 0.8;
+  min-height: 56px;
+}
+
+ion-searchbar {
+  --background: var(--app-surface);
+  --border-radius: var(--app-radius);
+  --box-shadow: none;
+  --color: var(--app-on-surface);
+  --placeholder-color: var(--app-on-surface-variant);
+  --icon-color: var(--app-on-surface-variant);
+  padding: 0;
+}
+
+ion-chip {
+  --background: transparent;
+  --color: var(--app-on-surface);
+  border: 1px solid var(--app-outline);
+  margin: 0;
+
+  &.ion-activated,
+  &[data-active='true'] {
+    --background: rgba(var(--ion-color-primary-rgb), 0.16);
+    --color: var(--ion-color-primary);
+    border-color: var(--ion-color-primary);
+  }
+}
+
+// Info strip: tinted, one line of helper copy with a leading icon
+ion-item.app-callout {
+  --background: rgba(var(--ion-color-primary-rgb), 0.12);
+  --color: var(--ion-color-primary);
+  --min-height: 44px;
+  --border-radius: 10px;
+  font-size: var(--app-text-sm);
+
+  ion-icon {
+    margin-inline-end: var(--stack-sm);
+  }
+}
+
+// Underlined tabs (Edit / Preview, invoice status filter)
+ion-segment.app-tabs {
+  --background: var(--app-surface-low);
+  border-radius: var(--app-radius);
+  min-height: 56px;
+
+  ion-segment-button {
+    --color: var(--app-on-surface-variant);
+    --color-checked: var(--ion-color-primary);
+    --indicator-color: var(--ion-color-primary);
+    --background-checked: transparent;
+    --indicator-height: 2px;
+    font-weight: 600;
+    min-width: 96px;
+
+    &::part(native) {
+      text-transform: none;
+    }
+  }
+}
+
+// Dialogs (customer form) follow the card look
+ion-modal {
+  --background: var(--app-surface);
+  --border-radius: var(--app-radius-lg);
+  --width: min(560px, 100%);
+  --height: min(760px, 92%);
+}
+
+ion-modal.setup-modal {
+  --height: min(540px, 92%);
+}
+
+ion-modal ion-header ion-toolbar {
+  --background: var(--app-surface);
+}
+
+ion-alert .alert-button.alert-danger {
+  color: var(--ion-color-danger);
+}
+
+@media (max-width: 767px) {
+  ion-header ion-toolbar {
+    --min-height: 64px;
+
+    ion-title {
+      font-size: var(--app-text-lg);
+    }
+  }
+
+  ion-card.app-card {
+    ion-card-header {
+      padding: var(--stack-md) var(--stack-md) var(--stack-sm);
+    }
+
+    ion-card-content {
+      padding: var(--stack-sm) var(--stack-md) var(--stack-md);
+    }
+
+    ion-item {
+      --padding-start: var(--stack-md);
+      --inner-padding-end: var(--stack-md);
+    }
+  }
+
+  ion-grid.app-page {
+    --ion-grid-padding: var(--stack-sm);
+  }
+}
+
+// ---- Printing ----------------------------------------------------------------
+// printElement() clones the invoice paper into #print-root and adds `is-printing` to <html>.
+// Never use `body * { visibility: hidden }`: Ionic's shadow-DOM scroller prints a blank page.
+
+@page {
+  size: A4;
+  margin: 0;
+}
+
+#print-root {
+  display: none;
+}
+
+@media print {
+  html.is-printing {
+    &,
+    body {
+      height: auto;
+      overflow: visible;
+      position: static;
+      background: #ffffff;
+    }
+
+    body > *:not(#print-root) {
+      display: none !important;
+    }
+
+    #print-root {
+      display: block;
+    }
+
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+  }
+}

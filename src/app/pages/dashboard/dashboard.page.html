@@ -1,0 +1,176 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button />
+    </ion-buttons>
+    <ion-title>{{ greeting() }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="solid" (click)="newInvoice()">
+        <ion-icon slot="start" name="add-outline" />
+        <ion-text class="ion-hide-sm-down">New invoice</ion-text>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="app-page">
+    @if (!stats().hasData) {
+      <ion-row class="ion-justify-content-center">
+        <ion-col size="12" size-md="8" class="app-empty">
+          <ion-icon name="sparkles-outline" size="large" color="primary" />
+          <h2>No invoices yet</h2>
+          <p>Create your first invoice, or load sample data to see how the dashboard works.</p>
+          <ion-button (click)="newInvoice()">Create an invoice</ion-button>
+          <ion-button fill="outline" (click)="loadDemo()">Load demo data</ion-button>
+        </ion-col>
+      </ion-row>
+    } @else {
+      <ion-row>
+        <ion-col size="12" size-xl="4">
+          <ion-card class="app-card hero">
+            <ion-card-header>
+              <ion-card-subtitle class="app-eyebrow">Billed · FY {{ fiscalYear() }}</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <h1 class="app-number">{{ whole(stats().billed) }}</h1>
+              <ion-item lines="none">
+                @if (monthChange(); as change) {
+                  <ion-chip>
+                    <ion-icon [name]="change.up ? 'trending-up-outline' : 'trending-down-outline'" />
+                    <ion-label>{{ change.percent }}</ion-label>
+                  </ion-chip>
+                }
+                <ion-label>{{ monthChange() ? 'vs last month · ' : '' }}{{ invoiceCount() }} invoice{{ invoiceCount() === 1 ? '' : 's' }}</ion-label>
+              </ion-item>
+              <ion-progress-bar [value]="stats().collectedShare" />
+              <ion-item lines="none">
+                <ion-label><strong>{{ compact(stats().collected) }}</strong> collected</ion-label>
+                <ion-label slot="end" class="ion-text-end">
+                  <strong>{{ percent(stats().collectedShare) }}</strong> of billed
+                </ion-label>
+              </ion-item>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+        <ion-col size="12" size-xl="8">
+          <ion-row class="kpis ion-no-padding">
+            <ion-col size="6" size-xl="4">
+              <app-kpi-card
+                label="Outstanding"
+                icon="time-outline"
+                tone="warning"
+                caption="Waiting on customers"
+                [value]="whole(stats().outstanding)"
+              />
+            </ion-col>
+            <ion-col size="6" size-xl="4">
+              <app-kpi-card
+                label="Overdue"
+                icon="alert-circle-outline"
+                tone="danger"
+                [alert]="true"
+                [caption]="overdueCaption()"
+                [value]="whole(stats().overdueAmount)"
+              />
+            </ion-col>
+            <ion-col size="12" size-xl="4">
+              <app-kpi-card
+                [label]="taxName() + ' collected'"
+                icon="receipt-outline"
+                tone="success"
+                caption="To pay with your return"
+                [value]="whole(stats().totalTax)"
+              />
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="12" size-lg="8">
+          <ion-card class="app-card">
+            <ion-card-header>
+              <ion-card-title>Billing, last 6 months</ion-card-title>
+              <ion-card-subtitle>Soft bar is billed, solid bar is money in</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <app-bar-chart [bars]="stats().months" [currency]="currency()" [locale]="locale()" />
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+        <ion-col size="12" size-lg="4">
+          <ion-card class="app-card">
+            <ion-card-header>
+              <ion-card-title>{{ taxName() }} split</ion-card-title>
+              <ion-card-subtitle>FY {{ fiscalYear() }}</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <app-donut-chart
+                [segments]="donutSegments()"
+                [currency]="currency()"
+                [locale]="locale()"
+                [centerLabel]="'Total ' + taxName()"
+              />
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="12" size-lg="8">
+          <ion-card class="app-card">
+            <ion-card-header>
+              <ion-item lines="none">
+                <ion-label>
+                  <ion-card-title>Recent invoices</ion-card-title>
+                  <ion-card-subtitle>Latest six</ion-card-subtitle>
+                </ion-label>
+                <ion-button slot="end" fill="clear" (click)="viewAll()">
+                  View all
+                  <ion-icon slot="end" name="arrow-forward-outline" />
+                </ion-button>
+              </ion-item>
+            </ion-card-header>
+            <ion-list lines="full">
+              @for (row of recent(); track row.invoice.id) {
+                <ion-item button detail="false" (click)="open(row.invoice.id)">
+                  <ion-label>
+                    <h2>{{ row.customerName }}</h2>
+                    <p>{{ row.invoice.number }} · {{ row.issued }}</p>
+                  </ion-label>
+                  <ion-label slot="end" class="ion-text-end">
+                    <h2 class="app-number">{{ row.total }}</h2>
+                    <app-status-badge [status]="row.status" />
+                  </ion-label>
+                </ion-item>
+              }
+            </ion-list>
+          </ion-card>
+        </ion-col>
+
+        <ion-col size="12" size-lg="4">
+          <ion-card class="app-card">
+            <ion-card-header>
+              <ion-card-title>Top customers</ion-card-title>
+              <ion-card-subtitle>By billing this year</ion-card-subtitle>
+            </ion-card-header>
+            <ion-list lines="none">
+              @for (customer of stats().topCustomers; track customer.customerId; let rank = $index) {
+                <ion-item>
+                  <ion-avatar slot="start">{{ rank + 1 }}</ion-avatar>
+                  <ion-label>
+                    <h3>{{ customer.name }}</h3>
+                    <ion-progress-bar [value]="customer.share" />
+                  </ion-label>
+                  <ion-text slot="end" class="app-number">{{ compact(customer.amount) }}</ion-text>
+                </ion-item>
+              }
+            </ion-list>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    }
+  </ion-grid>
+</ion-content>

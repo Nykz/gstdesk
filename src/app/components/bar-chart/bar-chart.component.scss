@@ -1,0 +1,35 @@
+svg {
+  width: 100%;
+  height: auto;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+ion-list.legend {
+  display: flex;
+  justify-content: flex-end;
+  background: transparent;
+  padding: 0;
+
+  ion-item {
+    --background: transparent;
+    --min-height: 28px;
+    --padding-start: 0;
+    --inner-padding-end: var(--stack-md);
+    font-size: var(--app-text-sm);
+    color: var(--app-on-surface-variant);
+
+    ion-icon {
+      font-size: 12px;
+      margin-inline-end: var(--stack-xs);
+
+      &.billed {
+        color: var(--app-chart-billed);
+      }
+
+      &.collected {
+        color: var(--app-chart-1);
+      }
+    }
+  }
+}

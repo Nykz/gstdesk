@@ -1,0 +1,70 @@
+ion-grid.app-page {
+  ion-segment.app-tabs ion-segment-button::part(native) {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  ion-card.problems {
+    --background: rgba(var(--ion-color-danger-rgb), 0.08);
+    border-color: var(--ion-color-danger);
+
+    ion-item {
+      --min-height: 32px;
+    }
+  }
+
+  ion-card ion-chip {
+    margin-inline-start: var(--stack-sm);
+  }
+
+  ion-col ion-button[fill='clear'] {
+    margin-inline-start: 0;
+  }
+
+  ion-list.totals {
+    max-width: 360px;
+    margin-inline-start: auto;
+    background: transparent;
+
+    ion-item {
+      --background: transparent;
+      --min-height: 32px;
+      --padding-start: 0;
+      --inner-padding-end: 0;
+
+      &.grand {
+        --min-height: 56px;
+        --border-width: 2px 0 0 0;
+        --border-color: var(--app-outline);
+        margin-top: var(--stack-sm);
+
+        h1 {
+          margin: 0;
+          font-weight: 700;
+        }
+      }
+    }
+  }
+}
+
+ion-header ion-toolbar ion-buttons {
+  app-status-badge {
+    margin-inline-end: var(--stack-sm);
+  }
+
+  ion-button {
+    --padding-start: 10px;
+    --padding-end: 10px;
+  }
+}
+
+ion-grid.app-page ion-col ion-text.app-eyebrow {
+  display: block;
+  margin-bottom: var(--stack-sm);
+}
+
+@media (max-width: 575px) {
+  ion-header ion-toolbar ion-back-button::part(text) {
+    display: none;
+  }
+}

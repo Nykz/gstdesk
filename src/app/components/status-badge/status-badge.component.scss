@@ -1,0 +1,39 @@
+ion-badge {
+  --padding-start: 12px;
+  --padding-end: 12px;
+  --padding-top: 5px;
+  --padding-bottom: 5px;
+  --border-radius: 999px;
+  font-weight: 600;
+  font-size: var(--app-text-sm);
+
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-inline-end: 6px;
+    border-radius: 50%;
+    background: var(--color);
+  }
+
+  &[data-status='draft'] {
+    --background: var(--app-surface-high);
+    --color: var(--app-on-surface-variant);
+  }
+
+  &[data-status='unpaid'] {
+    --background: rgba(var(--ion-color-warning-rgb), 0.18);
+    --color: var(--ion-color-warning);
+  }
+
+  &[data-status='paid'] {
+    --background: rgba(var(--ion-color-success-rgb), 0.16);
+    --color: var(--ion-color-success);
+  }
+
+  &[data-status='overdue'] {
+    --background: rgba(var(--ion-color-danger-rgb), 0.16);
+    --color: var(--ion-color-danger);
+  }
+}

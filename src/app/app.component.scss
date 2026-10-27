@@ -1,0 +1,10 @@
+ion-split-pane {
+  --side-width: var(--app-sidebar-width);
+  --side-min-width: var(--app-sidebar-width);
+  --border: 1px solid var(--app-outline-variant);
+
+  ion-menu {
+    --background: var(--app-sidebar-bg);
+    --width: var(--app-sidebar-width);
+  }
+}

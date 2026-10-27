@@ -1,0 +1,75 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button />
+    </ion-buttons>
+    <ion-title>Customers</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="solid" (click)="add()">
+        <ion-icon slot="start" name="add-outline" />
+        <ion-text class="ion-hide-sm-down">Add customer</ion-text>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="app-page">
+    <ion-row>
+      <ion-col size="12" size-lg="6">
+        <ion-searchbar placeholder="Search customers" [debounce]="150" (ionInput)="setQuery($event)" />
+      </ion-col>
+    </ion-row>
+
+    @if (cards().length === 0) {
+      <ion-row class="ion-justify-content-center">
+        <ion-col size="12" size-md="8" class="app-empty">
+          <h2>{{ total() === 0 ? 'No customers yet' : 'Nothing matches' }}</h2>
+          <p>{{ total() === 0 ? 'Add a customer to start invoicing.' : 'Try a different search.' }}</p>
+          @if (total() === 0) {
+            <ion-button (click)="add()">Add a customer</ion-button>
+          }
+        </ion-col>
+      </ion-row>
+    } @else {
+      <ion-row>
+        @for (card of cards(); track card.customer.id) {
+          <ion-col size="12" size-md="6" size-xl="4">
+            <ion-card class="app-card">
+              <ion-list lines="none">
+                <ion-item>
+                  <ion-avatar slot="start">{{ card.initials }}</ion-avatar>
+                  <ion-label>
+                    <h2>{{ card.customer.name }}</h2>
+                    <p>{{ card.place }}</p>
+                  </ion-label>
+                </ion-item>
+                <ion-item>
+                  @if (card.customer.taxId) {
+                    <ion-icon slot="start" name="checkmark-circle" color="success" aria-hidden="true" />
+                    <ion-label class="app-mono">{{ card.customer.taxId }}</ion-label>
+                  } @else {
+                    <ion-label class="app-muted">Unregistered · no tax ID</ion-label>
+                  }
+                </ion-item>
+                <ion-item>
+                  <ion-icon slot="start" name="mail-outline" aria-hidden="true" />
+                  <ion-label class="app-muted">{{ card.customer.email || 'No email' }}</ion-label>
+                </ion-item>
+                <ion-item lines="none" class="footer">
+                  <ion-label class="app-muted">{{ card.invoiceCount }} invoice{{ card.invoiceCount === 1 ? '' : 's' }}</ion-label>
+                  <ion-button slot="end" fill="clear" color="primary" aria-label="Edit customer" (click)="edit(card.customer)">
+                    <ion-icon slot="icon-only" name="create-outline" />
+                  </ion-button>
+                  <ion-button slot="end" fill="clear" color="medium" aria-label="Delete customer" (click)="remove(card.customer)">
+                    <ion-icon slot="icon-only" name="trash-outline" />
+                  </ion-button>
+                </ion-item>
+              </ion-list>
+            </ion-card>
+          </ion-col>
+        }
+      </ion-row>
+    }
+  </ion-grid>
+</ion-content>

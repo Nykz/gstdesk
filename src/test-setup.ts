@@ -14,3 +14,7 @@ if (!window.matchMedia) {
       dispatchEvent: () => false,
     }) as MediaQueryList;
 }
+
+// jsdom does not implement element scrolling, which ion-segment and ion-content call.
+Element.prototype.scrollTo ??= () => undefined;
+Element.prototype.scrollIntoView ??= () => undefined;

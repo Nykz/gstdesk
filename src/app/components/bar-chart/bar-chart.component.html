@@ -1,0 +1,24 @@
+<ion-list lines="none" class="legend">
+  <ion-item>
+    <ion-icon slot="start" name="square" aria-hidden="true" class="billed" />
+    <ion-label>Billed</ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-icon slot="start" name="square" aria-hidden="true" class="collected" />
+    <ion-label>Collected</ion-label>
+  </ion-item>
+</ion-list>
+<svg [attr.viewBox]="'0 0 ' + width + ' ' + height" role="img" aria-label="Billed versus collected by month">
+  @for (tick of ticks(); track $index) {
+    <line [attr.x1]="plotLeft" [attr.x2]="plotRight" [attr.y1]="tick.y" [attr.y2]="tick.y" stroke="var(--app-outline-variant)" stroke-dasharray="3 4" />
+    <text [attr.x]="plotLeft - 8" [attr.y]="tick.y + 4" text-anchor="end" fill="var(--app-on-surface-variant)">{{ tick.label }}</text>
+  }
+  @for (group of groups(); track group.label + $index) {
+    <g>
+      <title>{{ group.title }}</title>
+      <rect [attr.x]="group.billed.x" [attr.y]="baseline - group.billed.height" [attr.width]="group.barWidth" [attr.height]="group.billed.height" rx="4" fill="var(--app-chart-billed)" />
+      <rect [attr.x]="group.collected.x" [attr.y]="baseline - group.collected.height" [attr.width]="group.barWidth" [attr.height]="group.collected.height" rx="4" fill="var(--app-chart-1)" />
+      <text [attr.x]="group.center" [attr.y]="baseline + 18" text-anchor="middle" fill="var(--app-on-surface-variant)">{{ group.label }}</text>
+    </g>
+  }
+</svg>

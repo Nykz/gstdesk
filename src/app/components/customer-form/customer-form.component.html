@@ -1,0 +1,73 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ isEdit() ? 'Edit customer' : 'New customer' }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cancel()">Cancel</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-input
+    label="Name"
+    labelPlacement="stacked"
+    fill="outline"
+    placeholder="Customer or company name"
+    [value]="form().name"
+    [class.ion-invalid]="nameError()"
+    [class.ion-touched]="submitted()"
+    [errorText]="'Enter a name.'"
+    (ionInput)="setText('name', $event)"
+  />
+
+  <ion-select
+    label="Country"
+    labelPlacement="stacked"
+    fill="outline"
+    interface="popover"
+    [value]="form().country"
+    (ionChange)="setCountry($event)"
+  >
+    @for (country of countries; track country.code) {
+      <ion-select-option [value]="country.code">{{ country.name }}</ion-select-option>
+    }
+  </ion-select>
+
+  <ion-input
+    [label]="taxIdLabel() + ' (leave blank if unregistered)'"
+    labelPlacement="stacked"
+    fill="outline"
+    [placeholder]="taxIdPlaceholder()"
+    [value]="form().taxId"
+    [class.ion-invalid]="taxIdError()"
+    [class.ion-touched]="taxIdError()"
+    [errorText]="'Enter a valid ' + taxIdLabel() + ' or leave it blank.'"
+    (ionInput)="setTaxId($event)"
+  />
+
+  @if (showRegion()) {
+    <ion-select
+      [label]="regime().regionLabel"
+      labelPlacement="stacked"
+      fill="outline"
+      interface="popover"
+      [value]="form().regionCode"
+      (ionChange)="setText('regionCode', $event)"
+    >
+      @for (region of regime().regions; track region.code) {
+        <ion-select-option [value]="region.code">{{ region.name }}</ion-select-option>
+      }
+    </ion-select>
+  }
+
+  <ion-input label="Email" labelPlacement="stacked" fill="outline" type="email" [value]="form().email" (ionInput)="setText('email', $event)" />
+  <ion-input label="Phone" labelPlacement="stacked" fill="outline" type="tel" [value]="form().phone" (ionInput)="setText('phone', $event)" />
+  <ion-textarea label="Address" labelPlacement="stacked" fill="outline" [autoGrow]="true" [value]="form().address" (ionInput)="setText('address', $event)" />
+
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button expand="block" (click)="save()">{{ isEdit() ? 'Save changes' : 'Add customer' }}</ion-button>
+  </ion-toolbar>
+</ion-footer>

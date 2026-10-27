@@ -1,0 +1,196 @@
+// Paper tokens only: the printed invoice is always black on white.
+:host {
+  display: block;
+}
+
+.paper {
+  position: relative;
+  box-sizing: border-box;
+  width: 210mm;
+  min-height: 297mm;
+  margin: 0 auto;
+  padding: 14mm;
+  background: var(--app-paper-bg);
+  color: var(--app-paper-text);
+  font-size: 10pt;
+  line-height: 1.4;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.18);
+
+  p,
+  dl,
+  h1,
+  h2,
+  h3 {
+    margin: 0;
+  }
+
+  h1 {
+    font-size: 16pt;
+  }
+
+  h2 {
+    font-size: 15pt;
+    letter-spacing: 0.06em;
+    text-align: right;
+  }
+
+  h3 {
+    font-size: 8.5pt;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--app-paper-muted);
+    margin-bottom: 2mm;
+  }
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    gap: 8mm;
+    padding-bottom: 5mm;
+    border-bottom: 2px solid var(--app-paper-text);
+
+    .meta dl {
+      display: grid;
+      grid-template-columns: auto auto;
+      gap: 1mm 5mm;
+      margin-top: 3mm;
+
+      dt {
+        color: var(--app-paper-muted);
+      }
+
+      dd {
+        margin: 0;
+        text-align: right;
+        font-weight: 600;
+      }
+    }
+  }
+
+  .billed,
+  .bank,
+  .notes {
+    margin-top: 5mm;
+  }
+
+  .placeholder {
+    color: var(--app-paper-muted);
+    font-style: italic;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 5mm;
+
+    th,
+    td {
+      padding: 1.6mm 2mm;
+      border-bottom: 1px solid var(--app-paper-line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: var(--app-paper-head);
+      font-size: 8.5pt;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .num {
+      text-align: right;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .narrow {
+      width: 8mm;
+    }
+
+    .grow {
+      width: 100%;
+    }
+  }
+
+  .totals-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8mm;
+    margin-top: 2mm;
+
+    .left {
+      flex: 1;
+    }
+
+    .tax-summary {
+      font-size: 9pt;
+    }
+
+    .totals {
+      min-width: 70mm;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1.4mm 6mm;
+      margin-top: 5mm;
+      font-variant-numeric: tabular-nums;
+
+      dd {
+        margin: 0;
+        text-align: right;
+      }
+
+      .grand {
+        font-weight: 700;
+        font-size: 12pt;
+        padding-top: 1.6mm;
+        border-top: 2px solid var(--app-paper-text);
+      }
+    }
+  }
+
+  .words {
+    margin-top: 5mm;
+  }
+
+  .note {
+    margin-top: 3mm;
+    color: var(--app-paper-muted);
+  }
+
+  .stamp {
+    position: absolute;
+    top: 62mm;
+    right: 18mm;
+    padding: 1mm 5mm;
+    border: 3px solid var(--app-paper-stamp);
+    border-radius: 2mm;
+    color: var(--app-paper-stamp);
+    font-size: 22pt;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    transform: rotate(-12deg);
+    opacity: 0.8;
+  }
+
+  footer {
+    margin-top: 10mm;
+    padding-top: 3mm;
+    border-top: 1px solid var(--app-paper-line);
+    text-align: center;
+    font-size: 8pt;
+    color: var(--app-paper-muted);
+  }
+}
+
+@media print {
+  .paper {
+    width: 210mm;
+    height: 296mm;
+    min-height: 0;
+    overflow: hidden;
+    box-shadow: none;
+    break-inside: avoid;
+  }
+}

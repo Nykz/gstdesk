@@ -1,0 +1,171 @@
+<article class="paper">
+  @if (paid()) {
+    <div class="stamp">PAID</div>
+  }
+
+  <header>
+    <section>
+      <h1>{{ business().name || 'Your business name' }}</h1>
+      @if (business().address) {
+        <p>{{ business().address }}</p>
+      }
+      @if (contactLine()) {
+        <p>{{ contactLine() }}</p>
+      }
+      @if (business().taxId) {
+        <p>
+          <strong>{{ regime().taxIdLabel }}:</strong> {{ business().taxId }}
+        </p>
+      }
+    </section>
+    <section class="meta">
+      <h2>{{ regime().documentTitle }}</h2>
+      <dl>
+        <dt>Invoice no.</dt>
+        <dd>{{ invoice().number }}</dd>
+        <dt>Issued</dt>
+        <dd>{{ issueDate() }}</dd>
+        <dt>Due</dt>
+        <dd>{{ dueDate() }}</dd>
+      </dl>
+    </section>
+  </header>
+
+  <section class="billed">
+    <h3>Billed to</h3>
+    @if (customer(); as customer) {
+      <p>
+        <strong>{{ customer.name }}</strong>
+      </p>
+      @if (customer.address) {
+        <p>{{ customer.address }}</p>
+      }
+      @if (customer.taxId) {
+        <p>
+          <strong>{{ customerTaxLabel() }}:</strong> {{ customer.taxId }}
+        </p>
+      } @else {
+        <p>Unregistered</p>
+      }
+      <p>{{ supplyLabel() }}</p>
+    } @else {
+      <p class="placeholder">Choose a customer</p>
+    }
+  </section>
+
+  <table class="items">
+    <thead>
+      <tr>
+        <th class="narrow">#</th>
+        <th class="grow">Description</th>
+        @if (showItemCode()) {
+          <th>{{ regime().itemCodeLabel }}</th>
+        }
+        <th class="num">Qty</th>
+        <th class="num">Rate</th>
+        @if (!exempt()) {
+          <th class="num">{{ regime().taxName }} %</th>
+        }
+        <th class="num">Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (row of rows(); track row.index) {
+        <tr>
+          <td class="narrow">{{ row.index }}</td>
+          <td class="grow">{{ row.description }}</td>
+          @if (showItemCode()) {
+            <td>{{ row.itemCode }}</td>
+          }
+          <td class="num">{{ row.quantity }}</td>
+          <td class="num">{{ row.rate }}</td>
+          @if (!exempt()) {
+            <td class="num">{{ row.taxRate }}%</td>
+          }
+          <td class="num">{{ row.amount }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+
+  <div class="totals-row">
+    <section class="left">
+      @if (showTaxTable()) {
+        <table class="tax-summary">
+          <thead>
+            <tr>
+              <th class="num">{{ regime().taxName }} %</th>
+              <th class="num">Taxable</th>
+              @for (heading of taxHeadings(); track heading) {
+                <th class="num">{{ heading }}</th>
+              }
+              <th class="num">Total tax</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of summaryRows(); track row.rate) {
+              <tr>
+                <td class="num">{{ row.rate }}%</td>
+                <td class="num">{{ row.taxable }}</td>
+                @for (part of row.parts; track part.label) {
+                  <td class="num">{{ part.amount }}</td>
+                }
+                <td class="num">{{ row.totalTax }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+      @if (exempt()) {
+        <p class="note">{{ regime().exemptNote }}</p>
+      }
+    </section>
+
+    <dl class="totals">
+      <dt>Subtotal</dt>
+      <dd>{{ money(totals().subtotal) }}</dd>
+      @for (line of totalLines(); track line.label) {
+        <dt>{{ line.label }}</dt>
+        <dd>{{ line.amount }}</dd>
+      }
+      @if (totals().roundOff !== 0) {
+        <dt>Round off</dt>
+        <dd>{{ money(totals().roundOff) }}</dd>
+      }
+      <dt class="grand">Total</dt>
+      <dd class="grand">{{ money(totals().grandTotal) }}</dd>
+    </dl>
+  </div>
+
+  <p class="words"><strong>Amount in words:</strong> {{ words() }}</p>
+  @if (exchangeNote()) {
+    <p class="note">{{ exchangeNote() }}</p>
+  }
+
+  @if (hasBankDetails()) {
+    <section class="bank">
+      <h3>Payment details</h3>
+      @if (business().bankName) {
+        <p>Bank: {{ business().bankName }}</p>
+      }
+      @if (business().accountNumber) {
+        <p>Account no.: {{ business().accountNumber }}</p>
+      }
+      @if (business().bankCode) {
+        <p>{{ regime().bankCodeLabel }}: {{ business().bankCode }}</p>
+      }
+      @if (business().paymentId) {
+        <p>{{ regime().paymentIdLabel }}: {{ business().paymentId }}</p>
+      }
+    </section>
+  }
+
+  @if (invoice().notes) {
+    <section class="notes">
+      <h3>Notes</h3>
+      <p>{{ invoice().notes }}</p>
+    </section>
+  }
+
+  <footer>This is a computer-generated invoice and does not require a signature.</footer>
+</article>

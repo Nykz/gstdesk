@@ -68,3 +68,8 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Local-only
+reference_images/
+.claude/settings.local.json
+android/local.properties

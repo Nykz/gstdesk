@@ -1,0 +1,63 @@
+ion-grid.app-page {
+  ion-segment.app-tabs {
+    --background: var(--app-surface);
+  }
+
+  ion-card ion-item {
+    ion-label.customer {
+      flex: 1 1 0;
+      min-width: 0;
+    }
+
+    ion-label.date {
+      flex: 0 0 150px;
+
+      &[data-overdue='true'] h3 {
+        color: var(--ion-color-danger);
+      }
+    }
+
+    ion-label.amount {
+      flex: 0 0 auto;
+      min-width: 140px;
+    }
+
+    h2 {
+      font-weight: 600;
+    }
+
+    app-status-badge {
+      min-width: 96px;
+      margin-inline: var(--stack-md);
+    }
+
+    &.summary {
+      --min-height: 56px;
+
+      ion-label {
+        white-space: nowrap;
+        overflow: visible;
+        text-overflow: clip;
+        flex: 0 0 auto;
+        min-width: max-content;
+      }
+
+      ion-label[slot='end'] {
+        margin-inline-start: auto;
+      }
+    }
+  }
+}
+
+@media (max-width: 991px) {
+  ion-grid.app-page ion-card ion-item {
+    ion-label.amount {
+      min-width: 0;
+    }
+
+    app-status-badge {
+      min-width: 0;
+      margin-inline: var(--stack-sm) 0;
+    }
+  }
+}

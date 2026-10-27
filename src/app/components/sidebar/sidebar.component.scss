@@ -1,0 +1,112 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--app-sidebar-bg);
+  color: var(--app-sidebar-text);
+
+  ion-toolbar {
+    --background: var(--app-sidebar-bg);
+    --color: var(--app-sidebar-text);
+    --min-height: 0;
+    --padding-start: var(--stack-sm);
+    --padding-end: var(--stack-sm);
+    --padding-top: var(--stack-sm);
+    --padding-bottom: var(--stack-sm);
+
+    ion-item {
+      --background: transparent;
+      --color: var(--app-sidebar-text);
+      --padding-start: var(--stack-sm);
+      --inner-padding-end: var(--stack-sm);
+
+      h1 {
+        font-size: var(--app-text-lg);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+
+      p {
+        font-size: var(--app-text-xs);
+        color: var(--app-sidebar-muted);
+      }
+
+      h3 {
+        font-size: var(--app-text-sm);
+        font-weight: 600;
+      }
+
+      h3,
+      p {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      ion-avatar {
+        --border-radius: 12px;
+        width: 40px;
+        height: 40px;
+
+        &:not(:has(img)) {
+          display: grid;
+          place-items: center;
+          background: var(--app-sidebar-active);
+          color: var(--ion-color-primary);
+          font-size: var(--app-text-sm);
+          font-weight: 700;
+        }
+      }
+
+      ion-button {
+        --color: var(--app-sidebar-muted);
+      }
+    }
+  }
+
+  ion-content {
+    --background: var(--app-sidebar-bg);
+
+    ion-button {
+      --background: var(--ion-color-primary);
+      --color: var(--ion-color-primary-contrast);
+      --border-radius: var(--app-radius);
+      --box-shadow: 0 8px 24px rgba(var(--ion-color-primary-rgb), 0.25);
+      height: 52px;
+      margin: var(--stack-sm) var(--stack-md) var(--stack-md);
+      font-weight: 600;
+    }
+
+    ion-list {
+      background: transparent;
+      padding: 0 var(--stack-md);
+
+      ion-item {
+        --background: transparent;
+        --color: var(--app-sidebar-muted);
+        --border-radius: var(--app-radius);
+        --min-height: 48px;
+        margin-bottom: var(--stack-xs);
+        font-weight: 500;
+
+        ion-icon {
+          margin-inline-end: var(--stack-md);
+        }
+
+        &.selected {
+          --background: var(--app-sidebar-active);
+          --color: var(--ion-color-primary);
+          font-weight: 600;
+
+          ion-label {
+            color: var(--app-sidebar-text);
+          }
+        }
+      }
+    }
+  }
+
+  ion-footer ion-toolbar {
+    border-top: 1px solid var(--app-outline-variant);
+  }
+}

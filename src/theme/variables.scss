@@ -1,2 +1,163 @@
-// For information on how to create your own theme, please refer to:
-// https://ionicframework.com/docs/theming/
+// Colours, spacing and type live here as tokens. Components and pages only reference them.
+// Dark mode is the `ion-palette-dark` class on <html>, toggled by ThemeService.
+
+:root {
+  // Ionic palette
+  --ion-color-primary: #0b8a62;
+  --ion-color-primary-rgb: 11, 138, 98;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #0a7a56;
+  --ion-color-primary-tint: #249671;
+
+  --ion-color-success: #15803d;
+  --ion-color-success-rgb: 21, 128, 61;
+  --ion-color-success-contrast: #ffffff;
+  --ion-color-success-contrast-rgb: 255, 255, 255;
+  --ion-color-success-shade: #127035;
+  --ion-color-success-tint: #2c8c50;
+
+  --ion-color-warning: #b45309;
+  --ion-color-warning-rgb: 180, 83, 9;
+  --ion-color-warning-contrast: #ffffff;
+  --ion-color-warning-contrast-rgb: 255, 255, 255;
+  --ion-color-warning-shade: #9e4908;
+  --ion-color-warning-tint: #bc6422;
+
+  --ion-color-danger: #b91c1c;
+  --ion-color-danger-rgb: 185, 28, 28;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
+  --ion-color-danger-shade: #a21919;
+  --ion-color-danger-tint: #c03333;
+
+  --ion-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --ion-background-color: var(--app-background);
+  --ion-background-color-rgb: 244, 246, 245;
+  --ion-text-color: var(--app-on-surface);
+  --ion-toolbar-background: var(--app-surface);
+  --ion-item-background: var(--app-surface);
+  --ion-card-background: var(--app-surface);
+
+  // App semantic tokens
+  --app-background: #f4f6f5;
+  --app-surface: #ffffff;
+  --app-surface-low: #eef2f1;
+  --app-surface-high: #e3eae8;
+  --app-on-surface: #10201c;
+  --app-on-surface-variant: #52625d;
+  --app-outline: #cfd8d5;
+  --app-outline-variant: #e2e8e6;
+  --app-primary: var(--ion-color-primary);
+  --app-on-primary: #ffffff;
+  --app-accent: #d97706;
+  --app-success: var(--ion-color-success);
+  --app-warning: var(--ion-color-warning);
+  --app-danger: var(--ion-color-danger);
+
+  --app-sidebar-bg: #0b1a16;
+  --app-sidebar-surface: #14281f;
+  --app-sidebar-text: #e6f0ec;
+  --app-sidebar-muted: #8fa89f;
+  --app-sidebar-active: #1f4a3d;
+
+  --app-chart-1: #0b8a62;
+  --app-chart-2: #0a6b4d;
+  --app-chart-3: #6d7df0;
+  --app-chart-4: #d97706;
+  --app-chart-5: #64748b;
+  --app-chart-billed: #bfe3d3;
+  --app-hero-from: #1f7a5c;
+  --app-hero-to: #0b3d2e;
+  --app-hero-text: #ffffff;
+  --app-hero-muted: rgba(255, 255, 255, 0.72);
+
+  // Printed invoice: always black on white, whatever the theme
+  --app-paper-bg: #ffffff;
+  --app-paper-text: #111111;
+  --app-paper-muted: #555555;
+  --app-paper-line: #cccccc;
+  --app-paper-head: #f1f1f1;
+  --app-paper-stamp: #15803d;
+
+  // Spacing and shape
+  --margin-page: 24px;
+  --stack-xs: 4px;
+  --stack-sm: 8px;
+  --stack-md: 16px;
+  --stack-lg: 32px;
+  --section-gap: 24px;
+  --gutter-card: 16px;
+  --app-radius: 14px;
+  --app-radius-lg: 24px;
+  --app-sidebar-width: 248px;
+  --app-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  // Type scale
+  --app-text-xs: 0.75rem;
+  --app-text-sm: 0.875rem;
+  --app-text-md: 1rem;
+  --app-text-lg: 1.25rem;
+  --app-text-xl: 1.75rem;
+  --app-text-hero: 2.25rem;
+}
+
+html.ion-palette-dark {
+  --ion-color-primary: #4be3ae;
+  --ion-color-primary-rgb: 75, 227, 174;
+  --ion-color-primary-contrast: #04261a;
+  --ion-color-primary-contrast-rgb: 4, 38, 26;
+  --ion-color-primary-shade: #42c898;
+  --ion-color-primary-tint: #5ee6b8;
+
+  --ion-color-success: #3ddba0;
+  --ion-color-success-rgb: 61, 219, 160;
+  --ion-color-success-contrast: #04261a;
+  --ion-color-success-contrast-rgb: 4, 38, 26;
+  --ion-color-success-shade: #36c18d;
+  --ion-color-success-tint: #51dfad;
+
+  --ion-color-warning: #e8890c;
+  --ion-color-warning-rgb: 232, 137, 12;
+  --ion-color-warning-contrast: #2a1a00;
+  --ion-color-warning-contrast-rgb: 42, 26, 0;
+  --ion-color-warning-shade: #cc780a;
+  --ion-color-warning-tint: #ea9524;
+
+  --ion-color-danger: #ff6b6b;
+  --ion-color-danger-rgb: 255, 107, 107;
+  --ion-color-danger-contrast: #2d0707;
+  --ion-color-danger-contrast-rgb: 45, 7, 7;
+  --ion-color-danger-shade: #e06060;
+  --ion-color-danger-tint: #ff7b7b;
+
+  --ion-color-medium: #9aa8a2;
+  --ion-color-medium-rgb: 154, 168, 162;
+
+  --ion-background-color-rgb: 16, 18, 17;
+  --app-background: #101211;
+  --app-surface: #141f1b;
+  --app-surface-low: #111b17;
+  --app-surface-high: #1c2d27;
+  --app-on-surface: #eef5f2;
+  --app-on-surface-variant: #97aba3;
+  --app-outline: #34453f;
+  --app-outline-variant: #1f3029;
+  --app-on-primary: #04261a;
+  --app-accent: #e8890c;
+
+  --app-sidebar-bg: #08110e;
+  --app-sidebar-surface: #101d18;
+  --app-sidebar-text: #eef5f2;
+  --app-sidebar-muted: #97aba3;
+  --app-sidebar-active: #15281f;
+
+  --app-chart-1: #3ddba0;
+  --app-chart-2: #1fa97a;
+  --app-chart-3: #8b9cff;
+  --app-chart-4: #e8890c;
+  --app-chart-5: #94a3b8;
+  --app-chart-billed: #1d4a3b;
+  --app-hero-from: #2f7a62;
+  --app-hero-to: #073a2a;
+}

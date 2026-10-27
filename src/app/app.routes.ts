@@ -2,12 +2,31 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
-    path: 'home',
-    loadComponent: () => import('./home/home.page').then((m) => m.HomePage),
+    path: 'dashboard',
+    loadComponent: () => import('./pages/dashboard/dashboard.page').then((m) => m.DashboardPage),
   },
   {
-    path: '',
-    redirectTo: 'home',
-    pathMatch: 'full',
+    path: 'invoices',
+    loadComponent: () => import('./pages/invoices/invoices.page').then((m) => m.InvoicesPage),
   },
+  {
+    path: 'invoices/new',
+    loadComponent: () =>
+      import('./pages/invoice-editor/invoice-editor.page').then((m) => m.InvoiceEditorPage),
+  },
+  {
+    path: 'invoices/:id',
+    loadComponent: () =>
+      import('./pages/invoice-editor/invoice-editor.page').then((m) => m.InvoiceEditorPage),
+  },
+  {
+    path: 'customers',
+    loadComponent: () => import('./pages/customers/customers.page').then((m) => m.CustomersPage),
+  },
+  {
+    path: 'settings',
+    loadComponent: () => import('./pages/settings/settings.page').then((m) => m.SettingsPage),
+  },
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+  { path: '**', redirectTo: 'dashboard' },
 ];

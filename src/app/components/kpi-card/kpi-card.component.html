@@ -1,0 +1,10 @@
+<ion-card class="app-card" [attr.data-alert]="alert()">
+  <ion-card-header>
+    <ion-card-subtitle class="app-eyebrow">{{ label() }}</ion-card-subtitle>
+    <ion-icon [name]="icon()" [color]="tone()" aria-hidden="true" />
+  </ion-card-header>
+  <ion-card-content>
+    <h2 class="app-number">{{ value() }}</h2>
+    <p class="app-muted">{{ caption() }}</p>
+  </ion-card-content>
+</ion-card>

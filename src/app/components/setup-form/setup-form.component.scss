@@ -1,0 +1,31 @@
+ion-content {
+  --background: var(--app-surface);
+
+  p {
+    margin-top: 0;
+  }
+
+  ion-input,
+  ion-select {
+    margin-bottom: var(--stack-md);
+  }
+}
+
+ion-footer ion-toolbar {
+  --background: var(--app-surface);
+  --padding-start: var(--stack-md);
+  --padding-end: var(--stack-md);
+  --padding-bottom: var(--stack-md);
+
+  ion-button {
+    margin: 0 0 var(--stack-xs);
+    height: 48px;
+    font-weight: 600;
+
+    &:not([fill='clear']) {
+      --background: var(--ion-color-primary);
+      --color: var(--ion-color-primary-contrast);
+      --border-radius: var(--app-radius);
+    }
+  }
+}

@@ -1,0 +1,15 @@
+:host {
+  display: block;
+}
+
+ion-grid ion-row {
+  padding-bottom: var(--stack-sm);
+
+  ion-col.amount {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--stack-xs);
+    font-weight: 600;
+  }
+}

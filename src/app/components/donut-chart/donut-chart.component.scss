@@ -1,0 +1,49 @@
+:host {
+  display: block;
+}
+
+svg {
+  display: block;
+  width: min(100%, 200px);
+  height: auto;
+  margin: 0 auto var(--stack-md);
+
+  text {
+    fill: var(--app-on-surface);
+  }
+
+  .total {
+    font-size: 5px;
+    font-weight: 700;
+  }
+
+  .caption {
+    font-size: 2.2px;
+    letter-spacing: 0.2px;
+    text-transform: uppercase;
+    fill: var(--app-on-surface-variant);
+  }
+}
+
+ion-list {
+  background: transparent;
+  padding: 0;
+
+  ion-item {
+    --background: transparent;
+    --min-height: 32px;
+    --padding-start: 0;
+    --inner-padding-end: 0;
+    font-size: var(--app-text-sm);
+
+    ion-icon {
+      font-size: 12px;
+      margin-inline-end: var(--stack-sm);
+    }
+
+    ion-note {
+      min-width: 40px;
+      text-align: end;
+    }
+  }
+}

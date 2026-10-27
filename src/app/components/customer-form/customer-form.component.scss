@@ -1,0 +1,29 @@
+ion-header ion-toolbar ion-title {
+  font-size: var(--app-text-lg);
+}
+
+ion-content {
+  --background: var(--app-surface);
+
+  ion-input,
+  ion-select,
+  ion-textarea {
+    margin-bottom: var(--stack-md);
+  }
+}
+
+ion-footer ion-toolbar {
+  --background: var(--app-surface);
+  --padding-start: var(--stack-md);
+  --padding-end: var(--stack-md);
+  --padding-bottom: var(--stack-md);
+
+  ion-button {
+    --background: var(--ion-color-primary);
+    --color: var(--ion-color-primary-contrast);
+    --border-radius: var(--app-radius);
+    height: 48px;
+    margin: 0;
+    font-weight: 600;
+  }
+}

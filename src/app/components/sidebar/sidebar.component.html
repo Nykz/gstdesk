@@ -1,0 +1,48 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-item lines="none">
+      <ion-avatar slot="start">
+        <img alt="GSTDesk logo" src="assets/icon/logo.svg" />
+      </ion-avatar>
+      <ion-label>
+        <h1>GSTDesk</h1>
+        <p>Invoicing, simplified</p>
+      </ion-label>
+    </ion-item>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-menu-toggle [autoHide]="false">
+    <ion-button expand="block" (click)="newInvoice()">
+      <ion-icon slot="start" name="add-outline" />
+      New invoice
+    </ion-button>
+  </ion-menu-toggle>
+
+  <ion-list lines="none">
+    @for (item of navItems; track item.path) {
+      <ion-menu-toggle [autoHide]="false">
+        <ion-item button detail="false" routerDirection="root" [routerLink]="item.path" routerLinkActive="selected">
+          <ion-icon slot="start" [name]="item.icon" />
+          <ion-label>{{ item.label }}</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+    }
+  </ion-list>
+</ion-content>
+
+<ion-footer class="ion-no-border">
+  <ion-toolbar>
+    <ion-item lines="none">
+      <ion-avatar slot="start">{{ initials() }}</ion-avatar>
+      <ion-label>
+        <h3>{{ businessName() }}</h3>
+        <p>{{ taxIdLine() }}</p>
+      </ion-label>
+      <ion-button slot="end" fill="clear" aria-label="Toggle dark mode" (click)="toggleTheme()">
+        <ion-icon slot="icon-only" name="contrast-outline" />
+      </ion-button>
+    </ion-item>
+  </ion-toolbar>
+</ion-footer>

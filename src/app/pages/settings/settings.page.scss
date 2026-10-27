@@ -1,0 +1,24 @@
+ion-grid.app-page ion-card ion-card-content {
+  ion-button {
+    margin-inline-end: var(--stack-sm);
+  }
+
+  ion-input[helper-text],
+  ion-select[helper-text] {
+    margin-bottom: var(--stack-sm);
+  }
+}
+
+// Appearance picker uses the native iOS segmented control on every platform
+ion-grid.app-page ion-segment[mode='ios'] {
+  --background: var(--app-surface-low);
+  min-height: 40px;
+
+  ion-segment-button {
+    --color: var(--app-on-surface-variant);
+    --color-checked: var(--app-on-surface);
+    --indicator-color: var(--app-outline);
+    --border-color: var(--app-outline-variant);
+    font-weight: 600;
+  }
+}

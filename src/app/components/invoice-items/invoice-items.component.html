@@ -1,0 +1,109 @@
+<ion-card class="app-card">
+  <ion-card-header>
+    <ion-item lines="none">
+      <ion-label>
+        <ion-card-title>Items</ion-card-title>
+      </ion-label>
+      <ion-button slot="end" fill="clear" size="small" (click)="add()">
+        <ion-icon slot="start" name="add-outline" />
+        Add item
+      </ion-button>
+    </ion-item>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-grid class="ion-no-padding">
+      @for (row of rows(); track row.item.id; let i = $index) {
+        <ion-row class="ion-align-items-center">
+          <ion-col size="12" size-lg="4">
+            <ion-input
+              label="Description"
+              labelPlacement="stacked"
+              fill="outline"
+              placeholder="What did you sell?"
+              [value]="row.item.description"
+              (ionInput)="setText(row.item.id, 'description', $event)"
+            />
+          </ion-col>
+          <ion-col size="12" size-md="6" size-lg="2">
+            <ion-input
+              [label]="regime().itemCodeLabel"
+              labelPlacement="stacked"
+              fill="outline"
+              [placeholder]="regime().itemCodeLabel"
+              [value]="row.item.itemCode"
+              (ionInput)="setText(row.item.id, 'itemCode', $event)"
+            />
+          </ion-col>
+          <ion-col size="6" size-md="3" size-lg="1">
+            <ion-input
+              label="Qty"
+              labelPlacement="stacked"
+              fill="outline"
+              type="number"
+              inputmode="decimal"
+              min="0"
+              [value]="row.item.quantity"
+              (ionInput)="setNumber(row.item.id, 'quantity', $event)"
+            />
+          </ion-col>
+          <ion-col size="6" size-md="3" size-lg="2">
+            <ion-input
+              [label]="'Rate (' + currency() + ')'"
+              labelPlacement="stacked"
+              fill="outline"
+              type="number"
+              inputmode="decimal"
+              min="0"
+              [value]="row.item.rate"
+              (ionInput)="setNumber(row.item.id, 'rate', $event)"
+            />
+          </ion-col>
+          @if (!exempt()) {
+            <ion-col size="6" size-lg="2">
+              @if (rateAsSelect()) {
+                <ion-select
+                  [label]="regime().taxName"
+                  labelPlacement="stacked"
+                  fill="outline"
+                  interface="popover"
+                  [value]="row.item.taxRate"
+                  (ionChange)="setNumber(row.item.id, 'taxRate', $event)"
+                >
+                  @for (rate of regime().rates; track rate) {
+                    <ion-select-option [value]="rate">{{ rate }}%</ion-select-option>
+                  }
+                </ion-select>
+              } @else {
+                <ion-input
+                  [label]="regime().taxName + ' %'"
+                  labelPlacement="stacked"
+                  fill="outline"
+                  type="number"
+                  inputmode="decimal"
+                  min="0"
+                  max="100"
+                  [value]="row.item.taxRate"
+                  (ionInput)="setNumber(row.item.id, 'taxRate', $event)"
+                />
+              }
+            </ion-col>
+          }
+          <ion-col size="6" size-lg="1" class="amount">
+            <ion-text class="app-number">{{ row.amount }}</ion-text>
+            <ion-button
+              fill="clear"
+              color="medium"
+              size="small"
+              [attr.aria-label]="'Remove item ' + (i + 1)"
+              [disabled]="rows().length === 1"
+              (click)="remove(row.item.id)"
+            >
+              <ion-icon slot="icon-only" name="trash-outline" />
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      }
+    </ion-grid>
+    <ng-content />
+  </ion-card-content>
+</ion-card>
